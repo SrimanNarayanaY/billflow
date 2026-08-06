@@ -30,6 +30,6 @@ import { TenantsModule } from './tenants/tenants.module';
     TenantOrAdminGuard,
     UsageCacheService,
   ],
-  exports: [REDIS, ApiKeyGuard, TenantOrAdminGuard, UsageCacheService, TenantsModule],
+  exports: [REDIS, ApiKeyGuard, TenantOrAdminGuard, UsageCacheService, TenantsModule, JwtModule],
 })
 export class CoreModule {}
