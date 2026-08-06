@@ -45,7 +45,10 @@ export class SubscriptionsService {
   }
 
   async findById(id: string): Promise<Subscription> {
-    const subscription = await this.subscriptionsRepository.findOne({ where: { id } });
+    const subscription = await this.subscriptionsRepository.findOne({
+      where: { id },
+      relations: ['plan'],
+    });
     if (!subscription) throw new NotFoundException('Subscription not found');
     return subscription;
   }

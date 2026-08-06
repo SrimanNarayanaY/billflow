@@ -9,6 +9,7 @@ import {
   Repository,
 } from 'typeorm';
 import { Subscription } from '../common/entities/subscription.entity';
+import { Plan } from '../common/entities/plan.entity';
 import { Invoice } from '../common/entities/invoice.entity';
 import { InvoiceLineItem } from '../common/entities/invoice-line-item.entity';
 import { UsageEvent } from '../common/entities/usage-event.entity';
@@ -106,7 +107,8 @@ export class InvoicingService {
       }
 
       // 3. Build line items.
-      const plan = subscription.plan;
+      const plan = await manager.findOne(Plan, { where: { id: subscription.planId } });
+      if (!plan) throw new NotFoundException('Plan not found');
       const periodLabel = `${periodStart.toISOString().slice(0, 10)} -> ${periodEnd.toISOString().slice(0, 10)}`;
       const lineItems: Partial<InvoiceLineItem>[] = [
         {

@@ -28,7 +28,7 @@ export class Subscription {
   @Column({ name: 'tenant_id', type: 'uuid' })
   tenantId: string;
 
-  @ManyToOne(() => Plan, { eager: true })
+  @ManyToOne(() => Plan)
   @JoinColumn({ name: 'plan_id' })
   plan: Plan;
 
