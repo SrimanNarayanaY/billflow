@@ -46,6 +46,7 @@ import { SeedService } from './seed.service';
       }),
     }),
     CoreModule,
+    TypeOrmModule.forFeature([Plan, Tenant, Subscription]),
     AuthModule,
     TenantsModule,
     PlansModule,
