@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api, Tenant, Plan } from '../utils/api';
+import { api, type Tenant, type Plan } from '../utils/api';
 import { TenantDrawer } from './TenantDrawer';
 
 interface DashboardProps {

@@ -30,7 +30,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   }
 
   const text = await response.text();
-  return text ? JSON.parse(text) : {};
+  return text ? JSON.parse(text) : ({} as any);
 }
 
 export interface Plan {

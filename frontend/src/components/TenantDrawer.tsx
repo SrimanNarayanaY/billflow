@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api, Tenant, Plan, Invoice } from '../utils/api';
+import { api, type Tenant, type Plan, type Invoice } from '../utils/api';
 
 interface DrawerProps {
   tenant: Tenant | null;
