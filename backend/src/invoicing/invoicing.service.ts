@@ -65,7 +65,7 @@ export class InvoicingService {
   }
 
   async closeCycle(subscriptionId: string, now = new Date()): Promise<Invoice | null> {
-    return this.dataSource.transaction(async (manager) => {
+    const invoice = await this.dataSource.transaction(async (manager) => {
       const subscription = await manager.findOne(Subscription, {
         where: { id: subscriptionId },
         lock: { mode: 'pessimistic_write' },
@@ -184,11 +184,15 @@ export class InvoicingService {
         await this.usageCache.setCycleKey(tenantId, subscription.currentPeriodStart.toISOString());
       }
 
-      // 6. Auto-charge (delivered through the simulated gateway/webhook pipeline).
-      await this.paymentsService.payInvoice(invoice.id, undefined, { outcome: 'success' });
-
       return invoice;
     });
+
+    if (invoice) {
+      // 6. Auto-charge (delivered through the simulated gateway/webhook pipeline).
+      await this.paymentsService.payInvoice(invoice.id, undefined, { outcome: 'success' });
+    }
+
+    return invoice;
   }
 
   async listByTenant(tenantId: string): Promise<Invoice[]> {
