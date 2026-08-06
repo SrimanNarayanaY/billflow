@@ -119,7 +119,7 @@ export class WebhooksService {
     await this.paymentsService.markFailed(attempt.id, reason);
     const { invoice } = await this.invoicingService.detail(attempt.invoiceId);
     const subscription = await this.subscriptionsService.findByTenant(invoice.tenantId);
-    if (subscription && subscription.status === 'active') {
+    if (subscription && (subscription.status === 'active' || subscription.status === 'past_due')) {
       await this.dunningService.handlePaymentFailed(subscription.id, reason);
     }
 
