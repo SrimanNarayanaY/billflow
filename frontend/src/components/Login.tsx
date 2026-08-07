@@ -20,6 +20,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       api.setToken(res.access_token);
       onLoginSuccess();
     } catch (err: any) {
+      console.log('Error logging in:', err);
       setError(err.message || 'Login failed');
     } finally {
       setLoading(false);

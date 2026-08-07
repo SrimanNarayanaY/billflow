@@ -1,0 +1,90 @@
+<h2>Select a Dashboard Layout Structure</h2>
+<p class="subtitle">We will build a React + Vite + TypeScript admin dashboard. Choose how you would like to organize the navigation and views.</p>
+
+<div class="options">
+  <div class="option" data-choice="unified" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Unified Slide-out Panel Layout (Recommended)</h3>
+      <p>Keep a master list of tenants on the main screen, and slide out details, invoices, usage graphs, and manual actions for a tenant from the right drawer without losing context.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="tabbed" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Multi-tab Navigation Layout</h3>
+      <p>Traditional multi-tab dashboard layout. Dedicated tabs for "Tenants & Usage", "Invoices & Payments", and "Dunning State Logs". Highly scalable as more views are added.</p>
+    </div>
+  </div>
+</div>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">A: Unified Slide-out Layout</div>
+    <div class="mockup-body" style="height: 180px; display: flex; flex-direction: column; font-size: 11px;">
+      <div class="mock-nav" style="padding: 4px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);">
+        <span>BillFlow Admin</span>
+        <span style="font-size: 9px; opacity: 0.7;">admin@billflow.dev</span>
+      </div>
+      <div style="display: flex; flex: 1; min-height: 0;">
+        <div class="mock-sidebar" style="width: 60px; padding: 4px; border-right: 1px solid var(--border); font-size: 9px;">
+          <div style="background: rgba(255,255,255,0.05); padding: 2px; margin-bottom: 4px; border-radius: 2px;">Dashboard</div>
+          <div style="padding: 2px; opacity: 0.7;">Webhooks</div>
+        </div>
+        <div class="mock-content" style="flex: 1; padding: 4px; display: flex; gap: 4px; min-height: 0;">
+          <div style="flex: 1; border: 1px dashed var(--border); padding: 4px; overflow: hidden;">
+            <strong>Tenants</strong>
+            <div style="background: rgba(255,255,255,0.05); padding: 2px; margin-top: 4px; font-size: 9px; border-left: 2px solid var(--primary);">Acme Corp</div>
+            <div style="background: rgba(255,255,255,0.02); padding: 2px; margin-top: 2px; font-size: 9px;">Globex Inc</div>
+          </div>
+          <div style="width: 100px; border-left: 1px solid var(--border); padding: 4px; background: rgba(255,255,255,0.02); overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9px; border-bottom: 1px solid var(--border); padding-bottom: 2px; margin-bottom: 4px;">
+              <strong>Acme Corp</strong>
+              <span style="color: var(--primary);">✕</span>
+            </div>
+            <div style="font-size: 8px; opacity: 0.8; margin-top: 2px;">Plan: Pro Plan</div>
+            <div style="font-size: 8px; opacity: 0.8;">Usage: 1,452/10,000</div>
+            <button class="mock-button" style="padding: 1px 3px; font-size: 7px; margin-top: 4px; width: 100%;">Change Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">B: Multi-tab Navigation Layout</div>
+    <div class="mockup-body" style="height: 180px; display: flex; flex-direction: column; font-size: 11px;">
+      <div class="mock-nav" style="padding: 4px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);">
+        <span>BillFlow Admin</span>
+        <div style="display: flex; gap: 6px; font-size: 9px;">
+          <span style="border-bottom: 2px solid var(--primary); font-weight: bold;">Tenants</span>
+          <span style="opacity: 0.7;">Invoices</span>
+          <span style="opacity: 0.7;">Dunning</span>
+        </div>
+      </div>
+      <div class="mock-content" style="flex: 1; padding: 6px; overflow-y: auto;">
+        <strong>Tenants & Metering</strong>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 8px; text-align: left;">
+          <tr style="border-bottom: 1px solid var(--border); opacity: 0.7;">
+            <th>Tenant</th>
+            <th>Plan</th>
+            <th>Usage</th>
+            <th>Status</th>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td>Acme Corp</td>
+            <td>Pro</td>
+            <td>1,452 (14%)</td>
+            <td style="color: #4caf50;">Active</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td>Globex Inc</td>
+            <td>Free</td>
+            <td>990 (99%)</td>
+            <td style="color: #f44336;">Suspended</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

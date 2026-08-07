@@ -35,7 +35,7 @@ import { SeedService } from './seed.service';
         password: config.get<string>('database.password'),
         database: config.get<string>('database.database'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
         logging: false,
       }),
     }),
