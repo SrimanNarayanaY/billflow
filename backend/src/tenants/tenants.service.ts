@@ -72,11 +72,23 @@ export class TenantsService {
   }
 
   async list(): Promise<Tenant[]> {
-    return this.tenantsRepository.find({ order: { createdAt: 'DESC' } });
+    return this.tenantsRepository.find({
+      relations: ['subscription', 'subscription.plan'],
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findById(id: string): Promise<Tenant> {
     const tenant = await this.tenantsRepository.findOne({ where: { id } });
+    if (!tenant) throw new NotFoundException('Tenant not found');
+    return tenant;
+  }
+
+  async findByIdWithSubscription(id: string): Promise<Tenant> {
+    const tenant = await this.tenantsRepository.findOne({
+      where: { id },
+      relations: ['subscription', 'subscription.plan'],
+    });
     if (!tenant) throw new NotFoundException('Tenant not found');
     return tenant;
   }

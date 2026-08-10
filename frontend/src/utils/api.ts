@@ -2,9 +2,11 @@ const BASE_URL = 'http://localhost:3000/api';
 
 function getHeaders() {
   const token = localStorage.getItem('billflow_token');
+  const apiKey = localStorage.getItem('billflow_api_key');
   return {
     'Content-Type': 'application/json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    ...(apiKey ? { 'x-api-key': apiKey } : {})
   };
 }
 
@@ -74,15 +76,22 @@ export const api = {
   },
   logout() {
     localStorage.removeItem('billflow_token');
+    localStorage.removeItem('billflow_api_key');
   },
-  async login(email: string, password: string): Promise<{ access_token: string }> {
-    return request<{ access_token: string }>('/auth/login', {
+  async login(email: string, password: string): Promise<{ accessToken: string }> {
+    return request<{ accessToken: string }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
   },
   async getTenants(): Promise<Tenant[]> {
     return request<Tenant[]>('/tenants');
+  },
+  async createTenant(name: string): Promise<{ tenant: Tenant; apiKey: string }> {
+    return request<{ tenant: Tenant; apiKey: string }>('/tenants', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
   },
   async getPlans(): Promise<Plan[]> {
     return request<Plan[]>('/plans');
@@ -116,6 +125,21 @@ export const api = {
   async triggerBillingCycle(): Promise<any> {
     return request('/invoices/generate-due', {
       method: 'POST',
+    });
+  },
+  async getProfile(): Promise<Tenant> {
+    return request<Tenant>('/tenants/me');
+  },
+  async getOwnInvoices(tenantId: string): Promise<Invoice[]> {
+    return request<Invoice[]>(`/invoices/${tenantId}`);
+  },
+  async getOwnUsage(): Promise<Record<string, number>> {
+    return request<Record<string, number>>('/usage/current');
+  },
+  async createSubscription(planId: string): Promise<any> {
+    return request('/subscriptions', {
+      method: 'POST',
+      body: JSON.stringify({ planId }),
     });
   }
 };
