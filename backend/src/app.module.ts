@@ -37,6 +37,7 @@ import { SeedService } from './seed.service';
         autoLoadEntities: true,
         synchronize: false,
         logging: false,
+        ssl: config.get<boolean>('database.ssl') ? { rejectUnauthorized: false } : undefined,
       }),
     }),
     BullModule.forRootAsync({
