@@ -32,4 +32,5 @@ import { TenantsModule } from './tenants/tenants.module';
   ],
   exports: [REDIS, ApiKeyGuard, TenantOrAdminGuard, UsageCacheService, TenantsModule, JwtModule],
 })
+
 export class CoreModule {}
