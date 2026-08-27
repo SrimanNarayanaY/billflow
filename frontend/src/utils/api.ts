@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://billflow-qp7v.onrender.com/api';
 
 function getHeaders() {
   const token = localStorage.getItem('billflow_token');
