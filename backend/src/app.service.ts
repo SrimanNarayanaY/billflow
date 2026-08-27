@@ -1,7 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { Redis } from 'ioredis';
+import { REDIS } from './common/redis.provider';
 
 @Injectable()
 export class AppService {
+  constructor(
+    private readonly dataSource: DataSource,
+    @Inject(REDIS) private readonly redis: Redis,
+  ) {}
+
   getInfo() {
     return {
       service: 'BillFlow API',
@@ -16,4 +24,44 @@ export class AppService {
       ],
     };
   }
+
+  async checkHealth() {
+    let dbStatus = 'up';
+    let redisStatus = 'up';
+    let isHealthy = true;
+
+    try {
+      await this.dataSource.query('SELECT 1');
+    } catch (err) {
+      dbStatus = 'down';
+      isHealthy = false;
+    }
+
+    try {
+      const pong = await this.redis.ping();
+      if (pong !== 'PONG') {
+        redisStatus = 'down';
+        isHealthy = false;
+      }
+    } catch (err) {
+      redisStatus = 'down';
+      isHealthy = false;
+    }
+
+    const response = {
+      status: isHealthy ? 'healthy' : 'unhealthy',
+      timestamp: new Date().toISOString(),
+      checks: {
+        database: dbStatus,
+        redis: redisStatus,
+      },
+    };
+
+    if (!isHealthy) {
+      throw new ServiceUnavailableException(response);
+    }
+
+    return response;
+  }
 }
+

@@ -16,10 +16,29 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        expect(res.body.service).toBe('BillFlow API');
+      });
+  });
+
+  it('/health (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/health')
+      .expect((res) => {
+        expect([200, 503]).toContain(res.status);
+        expect(res.body).toHaveProperty('status');
+        expect(res.body).toHaveProperty('timestamp');
+        expect(res.body.checks).toHaveProperty('database');
+        expect(res.body.checks).toHaveProperty('redis');
+      });
   });
 });
+
