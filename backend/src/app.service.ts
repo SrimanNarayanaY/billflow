@@ -30,18 +30,33 @@ export class AppService {
     let redisStatus = 'up';
     let isHealthy = true;
 
+    // 1. Database Check with 2-second timeout
     try {
-      await this.dataSource.query('SELECT 1');
+      const dbCheck = this.dataSource.query('SELECT 1');
+      const dbTimeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Database timeout')), 2000),
+      );
+      await Promise.race([dbCheck, dbTimeout]);
     } catch (err) {
       dbStatus = 'down';
       isHealthy = false;
     }
 
+    // 2. Redis Check with Status check and 2-second timeout
     try {
-      const pong = await this.redis.ping();
-      if (pong !== 'PONG') {
+      if (this.redis.status !== 'ready') {
         redisStatus = 'down';
         isHealthy = false;
+      } else {
+        const redisCheck = this.redis.ping();
+        const redisTimeout = new Promise<string>((_, reject) =>
+          setTimeout(() => reject(new Error('Redis timeout')), 2000),
+        );
+        const pong = await Promise.race([redisCheck, redisTimeout]);
+        if (pong !== 'PONG') {
+          redisStatus = 'down';
+          isHealthy = false;
+        }
       }
     } catch (err) {
       redisStatus = 'down';
